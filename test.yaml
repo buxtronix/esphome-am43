@@ -1,0 +1,42 @@
+---
+esphome:
+  name: test
+  platform: ESP32
+  board: esp32dev
+
+wifi:
+  ssid: wifi_ssid
+  password: wifi_password
+  fast_connect: true
+
+logger:
+
+external_components:
+  - source: components
+
+esp32_ble_tracker:
+
+ble_client:
+  - mac_address: "00:00:00:00:00:00"
+    id: south_window
+
+cover:
+  - platform: am43
+    name: "South window blinds"
+    id: south_window_cover
+    ble_client_id: south_window
+
+sensor:
+  - platform: am43
+    ble_client_id: south_window
+    battery_level:
+      name: "AM43 South battery"
+    illuminance:
+      name: "AM43 South light"
+    update_interval: 120s
+
+switch:
+  - platform: ble_client
+    name: "South AM43 On"
+    ble_client_id: south_window
+    id: south_window_on
